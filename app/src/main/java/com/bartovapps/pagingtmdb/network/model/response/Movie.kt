@@ -1,15 +1,19 @@
 package com.bartovapps.pagingtmdb.network.model.response
 
+import android.arch.persistence.room.ColumnInfo
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-data class Movie(@SerializedName("id") val id: Int,
-                 @SerializedName("title") val title : String,
-                 @SerializedName("overview") val overview : String,
-                 @SerializedName("release_date") val releaseDate : String,
-                 @SerializedName("vote_average") val voteAverage : Double,
-                 @SerializedName("vote_count") val voteCount : Long,
-                 @SerializedName("poster_path") val posterPath : String,
-                 @SerializedName("adult") val adult : Boolean) {
+@Entity(tableName = "movies")
+data class Movie(@PrimaryKey @ColumnInfo(name = "id") @SerializedName("id") val id: Int,
+                 @ColumnInfo(name = "title") @SerializedName("title") val title : String,
+                 @ColumnInfo(name = "overview") @SerializedName("overview") val overview : String,
+                 @ColumnInfo(name = "release_date") @SerializedName("release_date") val releaseDate : String,
+                 @ColumnInfo(name = "vote_average") @SerializedName("vote_average") val voteAverage : Double,
+                 @ColumnInfo(name = "vote_count") @SerializedName("vote_count") val voteCount : Long,
+                 @ColumnInfo(name = "poster_path") @SerializedName("poster_path") val posterPath : String,
+                 @ColumnInfo(name = "adult") @SerializedName("adult") val adult : Boolean) {
     override fun equals(other: Any?): Boolean {
         if(other == null || other !is Movie) return false
         if(this.id != other.id) return false

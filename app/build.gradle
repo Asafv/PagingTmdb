@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
@@ -58,6 +59,9 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:2.2.9"
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
+
+    implementation "android.arch.persistence.room:runtime:$life_cycle_version"
+    kapt "android.arch.persistence.room:compiler:$life_cycle_version" // For Kotlin use kapt instead of annotationProcessor
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
