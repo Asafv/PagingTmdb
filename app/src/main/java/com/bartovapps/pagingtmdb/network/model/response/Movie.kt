@@ -6,23 +6,27 @@ import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "movies")
-data class Movie(@PrimaryKey @ColumnInfo(name = "id") @SerializedName("id") val id: Int,
-                 @ColumnInfo(name = "title") @SerializedName("title") val title : String,
-                 @ColumnInfo(name = "overview") @SerializedName("overview") val overview : String,
-                 @ColumnInfo(name = "release_date") @SerializedName("release_date") val releaseDate : String,
-                 @ColumnInfo(name = "vote_average") @SerializedName("vote_average") val voteAverage : Double,
-                 @ColumnInfo(name = "vote_count") @SerializedName("vote_count") val voteCount : Long,
-                 @ColumnInfo(name = "poster_path") @SerializedName("poster_path") val posterPath : String,
-                 @ColumnInfo(name = "adult") @SerializedName("adult") val adult : Boolean) {
+data class Movie(
+    @PrimaryKey @ColumnInfo(name = "id") @SerializedName("id") val id: Int,
+    @ColumnInfo(name = "title") @SerializedName("title") val title: String,
+    @ColumnInfo(name = "overview") @SerializedName("overview") val overview: String,
+    @ColumnInfo(name = "release_date") @SerializedName("release_date") val releaseDate: String,
+    @ColumnInfo(name = "vote_average") @SerializedName("vote_average") val voteAverage: Double,
+    @ColumnInfo(name = "vote_count") @SerializedName("vote_count") val voteCount: Long,
+    @ColumnInfo(name = "poster_path") @SerializedName("poster_path") val posterPath: String,
+    @ColumnInfo(name = "adult") @SerializedName("adult") val adult: Boolean,
+    @ColumnInfo(name = "page") var page: Int
+) {
     override fun equals(other: Any?): Boolean {
-        if(other == null || other !is Movie) return false
-        if(this.id != other.id) return false
-        if(this.title != other.title) return false
-        if(this.overview != other.overview) return false
-        if(this.releaseDate != other.releaseDate) return false
-        if(this.voteAverage != other.voteAverage) return false
-        if(this.voteCount != other.voteCount) return false
-        if(this.adult != other.adult) return false
+        if (other == null || other !is Movie) return false
+        if (this.id != other.id) return false
+        if (this.title != other.title) return false
+        if (this.overview != other.overview) return false
+        if (this.releaseDate != other.releaseDate) return false
+        if (this.voteAverage != other.voteAverage) return false
+        if (this.voteCount != other.voteCount) return false
+        if (this.adult != other.adult) return false
+        if (this.page != other.page) return false
         return true
     }
 
@@ -35,6 +39,7 @@ data class Movie(@PrimaryKey @ColumnInfo(name = "id") @SerializedName("id") val 
         result = 31 * result + voteCount.hashCode()
         result = 31 * result + posterPath.hashCode()
         result = 31 * result + adult.hashCode()
+        result = 31 * result + page.hashCode()
         return result
     }
 

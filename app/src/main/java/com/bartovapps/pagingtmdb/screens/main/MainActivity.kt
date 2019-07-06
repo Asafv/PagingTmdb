@@ -31,8 +31,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setViewModel() {
-        viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, ViewModelFactory(applicationContext)).get(MainViewModel::class.java)
         viewModel.moviesPagedList.observe(this,
-            Observer<PagedList<Movie>> { t -> adapter.submitList(t) })
+            Observer<PagedList<MovieListItem>> { t -> adapter.submitList(t) })
     }
 }

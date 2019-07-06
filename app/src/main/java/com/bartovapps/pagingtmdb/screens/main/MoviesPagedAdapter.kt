@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.movie_item.movieImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 import timber.log.Timber
 
-class MoviesPagedAdapter : PagedListAdapter<Movie, RecyclerView.ViewHolder>(MoviesPagedAdapter.MovieDiffUtilCallback()) {
+class MoviesPagedAdapter : PagedListAdapter<MovieListItem, RecyclerView.ViewHolder>(MoviesPagedAdapter.MovieDiffUtilCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -27,36 +27,38 @@ class MoviesPagedAdapter : PagedListAdapter<Movie, RecyclerView.ViewHolder>(Movi
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        getItem(position)
         (holder as MoviesViewHolder).bind(getItem(position))
     }
 
 
 
     class MoviesViewHolder(viewItem : View) : RecyclerView.ViewHolder(viewItem){
-        val options = RequestOptions().apply(
+        private val options = RequestOptions().apply(
             RequestOptions.placeholderOf(ActivityCompat.getDrawable(viewItem.context, R.drawable.loading_drawable))
         ).apply(
             RequestOptions.fitCenterTransform()
         )
-        fun bind(item : Movie?){
-            if(item != null){
-                val uri = ApiService.buildImageUrl(item.posterPath)
-                val path = "https://${ApiService.TMDB_IMAGE_AUTHORITY}${item.posterPath}"
-                Timber.i("Image Uri: $path" )
-                Glide.with(itemView.context).
-                    load(path).
-                    apply(options).
-                    into(itemView.movieImage)
-            }
+
+        fun bind(item : MovieListItem?){
+            val path = "https://${ApiService.TMDB_IMAGE_AUTHORITY}${item?.posterPath}"
+            Timber.i("Image Uri: $path" )
+            Glide.with(itemView.context).
+                load(path).
+                apply(options).
+                into(itemView.movieImage)
+
+            itemView.movie_title.text = item?.title
+
         }
     }
 
-     class MovieDiffUtilCallback : DiffUtil.ItemCallback<Movie>(){
-        override fun areItemsTheSame(oldMovie: Movie, newMovie: Movie): Boolean {
+     class MovieDiffUtilCallback : DiffUtil.ItemCallback<MovieListItem>(){
+        override fun areItemsTheSame(oldMovie: MovieListItem, newMovie: MovieListItem): Boolean {
             return oldMovie.id == newMovie.id
         }
 
-        override fun areContentsTheSame(oldMovie:  Movie, newMovie: Movie): Boolean {
+        override fun areContentsTheSame(oldMovie:  MovieListItem, newMovie: MovieListItem): Boolean {
             return oldMovie == newMovie
         }
     }

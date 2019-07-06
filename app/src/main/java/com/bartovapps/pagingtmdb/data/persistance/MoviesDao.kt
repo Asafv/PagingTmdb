@@ -8,7 +8,7 @@ import com.bartovapps.pagingtmdb.network.model.response.Movie
 interface MoviesDao {
 
 
-    @Query("SELECT * FROM movies ORDER BY vote_average ASC")
+    @Query("SELECT * FROM movies ORDER BY page ASC")
     fun allItemsName(): DataSource.Factory<Int, Movie>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
