@@ -17,6 +17,11 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.movie_item.movieImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 import timber.log.Timber
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import android.text.format.DateUtils
+
 
 class MoviesPagedAdapter : PagedListAdapter<MovieListItem, RecyclerView.ViewHolder>(MoviesPagedAdapter.MovieDiffUtilCallback()) {
 
@@ -34,8 +39,11 @@ class MoviesPagedAdapter : PagedListAdapter<MovieListItem, RecyclerView.ViewHold
 
 
     class MoviesViewHolder(viewItem : View) : RecyclerView.ViewHolder(viewItem){
+        private val apiDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        private val viewDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+
         private val options = RequestOptions().apply(
-            RequestOptions.placeholderOf(ActivityCompat.getDrawable(viewItem.context, R.drawable.loading_drawable))
+            RequestOptions.placeholderOf(ActivityCompat.getDrawable(viewItem.context, com.bartovapps.pagingtmdb.R.drawable.loading_drawable))
         ).apply(
             RequestOptions.fitCenterTransform()
         )
@@ -49,6 +57,11 @@ class MoviesPagedAdapter : PagedListAdapter<MovieListItem, RecyclerView.ViewHold
                 into(itemView.movieImage)
 
             itemView.movie_title.text = item?.title
+            itemView.movie_rating.text = "${item?.voteAverage}/10"
+
+            val date = apiDateFormat.parse(item?.releaseDate)
+
+            itemView.release_date.text = viewDateFormat.format(date)
 
         }
     }

@@ -24,7 +24,7 @@ class Repository(private val endpoint: TmdbEndpoint, private val dao : MoviesDao
 
         dao?.let {
             val dataSourceFactory = dao.allItemsName().
-                mapByPage { input -> input.map { it -> MovieListItem(it.id, it.title, it.voteAverage, it.posterPath, it.page) } }
+                mapByPage { input -> input.map { it -> MovieListItem(it.id, it.title, it.voteAverage, it.posterPath, it.page, it.releaseDate) } }
             moviesList = LivePagedListBuilder(dataSourceFactory, config).setBoundaryCallback(AppBoundaryCallback(endpoint, dao)).build()
         }
     }
