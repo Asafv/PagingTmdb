@@ -59,9 +59,10 @@ class MoviesPagedAdapter : PagedListAdapter<MovieListItem, RecyclerView.ViewHold
             itemView.movie_title.text = item?.title
             itemView.movie_rating.text = "${item?.voteAverage}/10"
 
-            val date = apiDateFormat.parse(item?.releaseDate)
-
-            itemView.release_date.text = viewDateFormat.format(date)
+            item?.releaseDate?.let {
+                val date = apiDateFormat.parse(it)
+                itemView.release_date.text = viewDateFormat.format(date)
+            }
 
         }
     }

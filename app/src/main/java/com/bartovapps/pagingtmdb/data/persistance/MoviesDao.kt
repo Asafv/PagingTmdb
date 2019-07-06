@@ -11,6 +11,7 @@ interface MoviesDao {
     @Query("SELECT * FROM movies ORDER BY page ASC")
     fun allItemsName(): DataSource.Factory<Int, Movie>
 
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(items: List<Movie>)
 
@@ -22,4 +23,8 @@ interface MoviesDao {
 
     @Delete
     fun delete(item: Movie)
+
+    @Query("DELETE FROM movies")
+    fun deleteAll(): Int
+
 }

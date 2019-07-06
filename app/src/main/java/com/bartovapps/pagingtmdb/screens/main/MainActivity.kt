@@ -28,11 +28,20 @@ class MainActivity : AppCompatActivity() {
         adapter = MoviesPagedAdapter()
         moviesList.layoutManager = GridLayoutManager(this, 2)
         moviesList.adapter = adapter
+
+        swipe_refresh.setOnRefreshListener {
+            viewModel.refreshMovies()
+        }
     }
 
     private fun setViewModel() {
         viewModel = ViewModelProviders.of(this, ViewModelFactory(applicationContext)).get(MainViewModel::class.java)
         viewModel.moviesPagedList.observe(this,
-            Observer<PagedList<MovieListItem>> { t -> adapter.submitList(t) })
+            Observer<PagedList<MovieListItem>> {
+                    t -> adapter.submitList(t)
+                if(t?.isNotEmpty() == true){
+                    swipe_refresh.isRefreshing = false
+                }
+            })
     }
 }
