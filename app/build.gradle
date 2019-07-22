@@ -29,6 +29,7 @@ dependencies {
     def support_version = "28.0.0"
     def glide_version = "4.3.1"
     def retrofit_version = "2.5.0"
+    def navigationVersion = "2.0.0"
 
     //Retrofit version
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -37,12 +38,17 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
     //Architecture components
+    //LifeCycle and ViewModel
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
 
     //Paging components
     implementation 'androidx.paging:paging-runtime:2.1.0'
     implementation "android.arch.paging:rxjava2:$paging_version"
+
+    //Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
     //Support components
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -57,7 +63,6 @@ dependencies {
     //Rx Java
     implementation "io.reactivex.rxjava2:rxjava:2.2.9"
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
