@@ -1,10 +1,10 @@
 package com.bartovapps.pagingtmdb.screens.main
 
-import android.arch.paging.PagedListAdapter
+import androidx.paging.PagedListAdapter
 import android.net.Uri
-import android.support.v4.app.ActivityCompat
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
+import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,21 +18,21 @@ import kotlinx.android.synthetic.main.movie_item.movieImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 import timber.log.Timber
 
-class MoviesPagedAdapter : PagedListAdapter<Movie, RecyclerView.ViewHolder>(MoviesPagedAdapter.MovieDiffUtilCallback()) {
+class MoviesPagedAdapter : PagedListAdapter<Movie, androidx.recyclerview.widget.RecyclerView.ViewHolder>(MoviesPagedAdapter.MovieDiffUtilCallback()) {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
         return MoviesViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         (holder as MoviesViewHolder).bind(getItem(position))
     }
 
 
 
-    class MoviesViewHolder(viewItem : View) : RecyclerView.ViewHolder(viewItem){
+    class MoviesViewHolder(viewItem : View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(viewItem){
         val options = RequestOptions().apply(
             RequestOptions.placeholderOf(ActivityCompat.getDrawable(viewItem.context, R.drawable.loading_drawable))
         ).apply(

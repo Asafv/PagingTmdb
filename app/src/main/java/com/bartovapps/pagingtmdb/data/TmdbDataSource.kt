@@ -1,6 +1,6 @@
 package com.bartovapps.pagingtmdb.data
 
-import android.arch.paging.PageKeyedDataSource
+import androidx.paging.PageKeyedDataSource
 import com.bartovapps.pagingtmdb.network.apis.TmdbEndpoint
 import com.bartovapps.pagingtmdb.network.model.response.Movie
 import io.reactivex.android.schedulers.AndroidSchedulers

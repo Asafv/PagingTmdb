@@ -1,13 +1,13 @@
 package com.bartovapps.pagingtmdb.screens.main
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProviders
-import android.arch.paging.PagedList
-import android.support.v7.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
+import androidx.paging.PagedList
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bartovapps.pagingtmdb.R
 import com.bartovapps.pagingtmdb.network.model.response.Movie
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun configureScreen() {
         adapter = MoviesPagedAdapter()
-        moviesList.layoutManager = GridLayoutManager(this, 2)
+        moviesList.layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 2)
         moviesList.adapter = adapter
     }
 

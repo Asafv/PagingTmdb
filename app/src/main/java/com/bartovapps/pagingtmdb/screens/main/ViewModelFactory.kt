@@ -1,7 +1,7 @@
 package com.bartovapps.pagingtmdb.screens.main
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.bartovapps.pagingtmdb.data.Repository
 import com.bartovapps.pagingtmdb.network.ApiService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
