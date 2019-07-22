@@ -1,16 +1,15 @@
 package com.bartovapps.pagingtmdb.data
 
 import android.arch.lifecycle.LiveData
-import android.arch.paging.DataSource
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import com.bartovapps.pagingtmdb.data.persistance.MoviesDao
 import com.bartovapps.pagingtmdb.network.apis.TmdbEndpoint
 import com.bartovapps.pagingtmdb.screens.main.MovieListItem
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 
 class Repository(private val endpoint: TmdbEndpoint, private val dao : MoviesDao?) {
 
@@ -26,7 +25,7 @@ class Repository(private val endpoint: TmdbEndpoint, private val dao : MoviesDao
             .setPageSize(PAGE_SIZE).
                 setEnablePlaceholders(true).
                 setPrefetchDistance(2).
-                setInitialLoadSizeHint(1).build()
+                setInitialLoadSizeHint(2).build()
 
 
         dao?.let {
@@ -47,6 +46,18 @@ class Repository(private val endpoint: TmdbEndpoint, private val dao : MoviesDao
         clearCache()
     }
 
+
+    //This for explicit loading to load when opening the screen
+    fun loadMovies(){
+        val disposable = endpoint.getTopRatedMovies(1).subscribeOn(Schedulers.io()).subscribe({
+            dao?.insert(it.results)
+        }, {
+            Timber.e(it.cause)
+        })
+
+        disposables.add(disposable)
+    }
+
     private fun clearCache(){
         val  disposable = Observable.fromCallable{
             dao?.deleteAll()
@@ -54,4 +65,6 @@ class Repository(private val endpoint: TmdbEndpoint, private val dao : MoviesDao
 
         disposables.add(disposable)
     }
+
+
 }

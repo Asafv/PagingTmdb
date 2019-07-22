@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager
 import com.bartovapps.pagingtmdb.R
 import com.bartovapps.pagingtmdb.network.model.response.Movie
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,9 +40,17 @@ class MainActivity : AppCompatActivity() {
         viewModel.moviesPagedList.observe(this,
             Observer<PagedList<MovieListItem>> {
                     t -> adapter.submitList(t)
+                Timber.i("onChanged: ${t?.size} items")
+
                 if(t?.isNotEmpty() == true){
                     swipe_refresh.isRefreshing = false
                 }
             })
+
+        lifecycle.addObserver(viewModel)
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 }
