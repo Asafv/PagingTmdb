@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/app_nav_graph">
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/app_nav_graph"
+            app:startDestination="@id/mainPage">
 
+
+    <fragment android:id="@+id/mainPage"
+              android:name="com.bartovapps.pagingtmdb.screens.main.MainPage"
+              android:label="MainPage">
+
+        <action android:id="@+id/action_mainPage_to_detailsPage"
+                app:destination="@id/detailsPage" app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left" app:popUpTo="@+id/mainPage"/>
+    </fragment>
+
+    <fragment android:id="@+id/detailsPage"
+              android:name="com.bartovapps.pagingtmdb.screens.details.DetailsPage"
+              android:label="fragment_details_page"
+              tools:layout="@layout/fragment_details_page"/>
 </navigation>

@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.movie_item.movieImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 import timber.log.Timber
 
-class MoviesPagedAdapter : PagedListAdapter<Movie, androidx.recyclerview.widget.RecyclerView.ViewHolder>(MoviesPagedAdapter.MovieDiffUtilCallback()) {
+class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) : PagedListAdapter<Movie, androidx.recyclerview.widget.RecyclerView.ViewHolder>(MoviesPagedAdapter.MovieDiffUtilCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
@@ -32,7 +32,7 @@ class MoviesPagedAdapter : PagedListAdapter<Movie, androidx.recyclerview.widget.
 
 
 
-    class MoviesViewHolder(viewItem : View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(viewItem){
+    inner class MoviesViewHolder(val viewItem : View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(viewItem){
         val options = RequestOptions().apply(
             RequestOptions.placeholderOf(ActivityCompat.getDrawable(viewItem.context, R.drawable.loading_drawable))
         ).apply(
@@ -47,6 +47,11 @@ class MoviesPagedAdapter : PagedListAdapter<Movie, androidx.recyclerview.widget.
                     load(path).
                     apply(options).
                     into(itemView.movieImage)
+
+                viewItem.setOnClickListener {
+                    adapterClickListener.onItemClicked(item.id)
+                }
+
             }
         }
     }
@@ -59,5 +64,10 @@ class MoviesPagedAdapter : PagedListAdapter<Movie, androidx.recyclerview.widget.
         override fun areContentsTheSame(oldMovie:  Movie, newMovie: Movie): Boolean {
             return oldMovie == newMovie
         }
+    }
+
+
+    interface AdapterClickListener{
+        fun onItemClicked(id: Int)
     }
 }
