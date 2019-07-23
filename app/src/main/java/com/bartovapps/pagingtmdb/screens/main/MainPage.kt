@@ -1,7 +1,5 @@
 package com.bartovapps.pagingtmdb.screens.main
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +12,7 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 
 import com.bartovapps.pagingtmdb.R
+import com.bartovapps.pagingtmdb.ViewModelFactory
 import com.bartovapps.pagingtmdb.network.model.response.Movie
 import kotlinx.android.synthetic.main.fragment_main_page.*
 

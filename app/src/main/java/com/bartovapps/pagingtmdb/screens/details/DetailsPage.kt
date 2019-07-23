@@ -8,12 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.bartovapps.pagingtmdb.R
+import com.bartovapps.pagingtmdb.ViewModelFactory
 
 /**
  * A simple [Fragment] subclass.
  *
  */
 class DetailsPage : Fragment() {
+
+    lateinit var viewModel : DetailsViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setViewModel()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,5 +31,9 @@ class DetailsPage : Fragment() {
         return inflater.inflate(R.layout.fragment_details_page, container, false)
     }
 
+    private fun setViewModel() {
+        val viewModelFactory = ViewModelFactory()
+
+    }
 
 }
