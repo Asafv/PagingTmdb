@@ -4,9 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.bartovapps.pagingtmdb.network.apis.TmdbEndpoint
+import com.bartovapps.pagingtmdb.network.model.response.DetailsApiResponse
 import com.bartovapps.pagingtmdb.network.model.response.Movie
+import io.reactivex.Flowable
+import io.reactivex.Single
 
-class Repository(endpoint: TmdbEndpoint) {
+class Repository(val endpoint: TmdbEndpoint) {
 
     val moviesList: LiveData<PagedList<Movie>>
 
@@ -20,4 +23,8 @@ class Repository(endpoint: TmdbEndpoint) {
         moviesList = LivePagedListBuilder(TmdbDsFactory(endpoint), config).build()
     }
 
+
+    fun getMovieById(id: Int) : Single<DetailsApiResponse> {
+        return endpoint.getMovieDetails(id)
+    }
 }
