@@ -1,5 +1,6 @@
 package com.bartovapps.pagingtmdb.data.persistance
 
+import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
 import com.bartovapps.pagingtmdb.network.model.response.Movie
@@ -10,6 +11,8 @@ interface MoviesDao {
     @Query("SELECT * FROM movies ORDER BY page ASC")
     fun allItemsName(): DataSource.Factory<Int, Movie>
 
+    @Query("SELECT * FROM movies WHERE id LIKE :id")
+    fun getItemById(id : Int) : LiveData<Movie>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(items: List<Movie>)

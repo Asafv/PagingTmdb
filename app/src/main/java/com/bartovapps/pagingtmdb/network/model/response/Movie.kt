@@ -15,6 +15,8 @@ data class Movie(
     @ColumnInfo(name = "vote_count") @SerializedName("vote_count") val voteCount: Long,
     @ColumnInfo(name = "poster_path") @SerializedName("poster_path") val posterPath: String,
     @ColumnInfo(name = "adult") @SerializedName("adult") val adult: Boolean,
+    @ColumnInfo(name = "backdrop_path") var backdrop_path: String? = null,
+    @ColumnInfo(name = "duration") var runtime: Int? = null,
     @ColumnInfo(name = "page") var page: Int
 ) {
     override fun equals(other: Any?): Boolean {

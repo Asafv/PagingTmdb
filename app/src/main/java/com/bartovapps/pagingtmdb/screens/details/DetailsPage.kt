@@ -16,6 +16,7 @@ import com.bartovapps.pagingtmdb.TmdbApplication
 import com.bartovapps.pagingtmdb.ViewModelFactory
 import com.bartovapps.pagingtmdb.network.ApiService
 import com.bartovapps.pagingtmdb.network.model.response.DetailsApiResponse
+import com.bartovapps.pagingtmdb.network.model.response.Movie
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_details_page.*
@@ -28,7 +29,7 @@ import timber.log.Timber
  */
 class DetailsPage : Fragment() {
 
-    lateinit var viewModel : DetailsViewModel
+    private lateinit var viewModel : DetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +46,11 @@ class DetailsPage : Fragment() {
     }
 
     private fun setViewModel() {
-        val viewModelFactory = ViewModelFactory(activity?.application as TmdbApplication)
+        val args : DetailsPageArgs by navArgs()
+        val viewModelFactory = ViewModelFactory(activity?.application as TmdbApplication, args.id)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailsViewModel::class.java)
         viewModel.detailsLiveData.observe(this,
-            Observer<DetailsApiResponse?> { t ->
+            Observer<Movie> { t ->
                 t?.let {
                     refreshUi(it)
                 }
@@ -58,12 +60,11 @@ class DetailsPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val args : DetailsPageArgs by navArgs()
-        viewModel.loadMovieDetails(args.id)
+
     }
 
 
-    private fun refreshUi(response: DetailsApiResponse) {
+    private fun refreshUi(response: Movie) {
 
         val options = RequestOptions().apply(
             RequestOptions.placeholderOf(ActivityCompat.getDrawable(this.context!!, R.drawable.loading_drawable))
@@ -80,13 +81,13 @@ class DetailsPage : Fragment() {
         }
 
         Glide.with(this.context).
-            load(ApiService.buildImageUrl(response.poster_path!!)).
+            load(ApiService.buildImageUrl(response.posterPath)).
             apply(options).
             into(mainPoster)
 
         movieTitle.text = response.title
-        rate.text = "${response.vote_average} / 10"
-        releaseDate.text = response.release_date
+        rate.text = "${response.voteAverage} / 10"
+        releaseDate.text = response.releaseDate
         overview.text = response.overview
 
     }
