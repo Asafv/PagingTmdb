@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bartovapps.pagingtmdb.R
 import com.bartovapps.pagingtmdb.ViewModelFactory
 import com.bartovapps.pagingtmdb.network.model.response.Movie
+import com.bartovapps.pagingtmdb.screens.details.DetailsPageArgs
 import kotlinx.android.synthetic.main.fragment_main_page.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -66,7 +67,7 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
 
 
     override fun onItemClicked(id: Int) {
-        findNavController().navigate(R.id.action_mainPage_to_detailsPage, null)
+        findNavController().navigate(MainPageDirections.actionMainPageToDetailsPage(id))
     }
 
 }

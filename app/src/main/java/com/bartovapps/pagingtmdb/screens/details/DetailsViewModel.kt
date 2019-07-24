@@ -9,31 +9,31 @@ import com.bartovapps.pagingtmdb.data.Repository
 import com.bartovapps.pagingtmdb.network.model.response.DetailsApiResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Action
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 
 class DetailsViewModel(private val repository: Repository) : ViewModel() {
 
-    private val detailsLiveData = MutableLiveData<DetailsApiResponse?>()
-    private val data: MutableLiveData<DetailsApiResponse?>
-    get() {
-        return detailsLiveData
-    }
+    val detailsLiveData = MutableLiveData<DetailsApiResponse?>()
+
     private val disposables = CompositeDisposable()
 
     init {
 
     }
 
-    fun loadMovieDetails(id: Int){
-        val disposable = repository.getMovieById(id).
-            subscribeOn(Schedulers.io()).
-            observeOn(AndroidSchedulers.mainThread()).
-            subscribe(Consumer<DetailsApiResponse> { t -> detailsLiveData.postValue(t) }, object : Consumer<Throwable>{
-                override fun accept(t: Throwable?) {
-                }
-            })
+    fun loadMovieDetails(id: Int) {
+        val disposable =
+            repository.getMovieById(id).
+                subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ t ->
+                    detailsLiveData.postValue(t)
+                    Timber.i("Got movie details: $t")
+                },
+                    {
+                        Timber.e("There was an error: ${it.cause}")
+                    })
 
         disposables.add(disposable)
     }

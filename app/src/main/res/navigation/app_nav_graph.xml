@@ -17,5 +17,11 @@
     <fragment android:id="@+id/detailsPage"
               android:name="com.bartovapps.pagingtmdb.screens.details.DetailsPage"
               android:label="fragment_details_page"
-              tools:layout="@layout/fragment_details_page"/>
+              tools:layout="@layout/fragment_details_page">
+
+        <argument
+                android:name="id"
+                app:argType="integer"
+                android:defaultValue="100"/>
+    </fragment>
 </navigation>

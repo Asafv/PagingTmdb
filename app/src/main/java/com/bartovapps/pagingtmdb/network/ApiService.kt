@@ -13,11 +13,10 @@ object ApiService {
     const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"
     const val API_KEY = "b331218ddcbd128634135abf7673fab5"
     const val TMDB_IMAGE_AUTHORITY = "image.tmdb.org/t/p/w500"
-    var instance: ApiService? = null
 
 
-    fun buildImageUrl(imagePath: String): Uri {
-        return Uri.Builder().scheme("https").authority(TMDB_IMAGE_AUTHORITY).path(imagePath).build()
+    fun buildImageUrl(imagePath: String): String {
+        return  "https://$TMDB_IMAGE_AUTHORITY$imagePath"
     }
 
 

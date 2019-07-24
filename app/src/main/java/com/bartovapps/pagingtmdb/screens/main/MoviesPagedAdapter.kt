@@ -40,7 +40,6 @@ class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) : Paged
         )
         fun bind(item : Movie?){
             if(item != null){
-                val uri = ApiService.buildImageUrl(item.posterPath)
                 val path = "https://${ApiService.TMDB_IMAGE_AUTHORITY}${item.posterPath}"
                 Timber.i("Image Uri: $path" )
                 Glide.with(itemView.context).
