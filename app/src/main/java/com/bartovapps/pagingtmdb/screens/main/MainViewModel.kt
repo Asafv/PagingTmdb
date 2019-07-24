@@ -1,9 +1,8 @@
 package com.bartovapps.pagingtmdb.screens.main
 
-import android.arch.lifecycle.*
-import android.arch.paging.PagedList
+import androidx.lifecycle.*
+import androidx.paging.PagedList
 import com.bartovapps.pagingtmdb.data.Repository
-import com.bartovapps.pagingtmdb.network.model.response.Movie
 import timber.log.Timber
 
 class MainViewModel(private val repository: Repository) : ViewModel() , LifecycleObserver {

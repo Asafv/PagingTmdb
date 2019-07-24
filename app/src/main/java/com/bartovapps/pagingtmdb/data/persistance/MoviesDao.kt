@@ -1,12 +1,11 @@
 package com.bartovapps.pagingtmdb.data.persistance
 
-import android.arch.paging.DataSource
-import android.arch.persistence.room.*
+import androidx.paging.DataSource
+import androidx.room.*
 import com.bartovapps.pagingtmdb.network.model.response.Movie
 
 @Dao
 interface MoviesDao {
-
 
     @Query("SELECT * FROM movies ORDER BY page ASC")
     fun allItemsName(): DataSource.Factory<Int, Movie>

@@ -9,60 +9,40 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.URI
 
-class ApiService {
-    companion object {
-        const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"
-        const val API_KEY = "b331218ddcbd128634135abf7673fab5"
-        const val TMDB_IMAGE_AUTHORITY = "image.tmdb.org/t/p/w500"
-        var instance : ApiService? = null
-
-        fun newInstance() : ApiService? {
-            if(instance == null){
-                instance = ApiService()
-            }
-
-            return instance
-        }
+object ApiService {
+    const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"
+    const val API_KEY = "b331218ddcbd128634135abf7673fab5"
+    const val TMDB_IMAGE_AUTHORITY = "image.tmdb.org/t/p/w500"
 
 
-        fun buildImageUrl(imagePath : String) : Uri {
-            return Uri.Builder().
-                scheme("https").
-                authority(TMDB_IMAGE_AUTHORITY).path(imagePath).build()
-        }
+    fun buildImageUrl(imagePath: String): String {
+        return  "https://$TMDB_IMAGE_AUTHORITY$imagePath"
     }
 
-    private val retrofit : Retrofit
-    private val client : OkHttpClient
+
+    private val retrofit: Retrofit
+    private val client: OkHttpClient
 
     init {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         client = OkHttpClient()
-        val client : OkHttpClient = OkHttpClient.Builder().
-            addInterceptor(loggingInterceptor).
-            addInterceptor{chain->
-                val original = chain.request()
-                val orgUrl = original.url()
-                val newUrl = orgUrl.newBuilder().
-                     addQueryParameter("api_key", API_KEY).
-                     build()
+        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).addInterceptor { chain ->
+            val original = chain.request()
+            val orgUrl = original.url()
+            val newUrl = orgUrl.newBuilder().addQueryParameter("api_key", API_KEY).build()
 
-                val reqBuilder = original.newBuilder().url(newUrl)
-                chain.proceed(reqBuilder.build())
-            }.
-            build()
+            val reqBuilder = original.newBuilder().url(newUrl)
+            chain.proceed(reqBuilder.build())
+        }.build()
 
 
-        retrofit = Retrofit.Builder().baseUrl(TMDB_BASE_URL).
-            addConverterFactory(GsonConverterFactory.create()).
-            addCallAdapterFactory(RxJava2CallAdapterFactory.create()).
-            client(client).
-            build()
+        retrofit = Retrofit.Builder().baseUrl(TMDB_BASE_URL).addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create()).client(client).build()
     }
 
 
-    fun getEndPoint() : TmdbEndpoint{
+    fun getEndPoint(): TmdbEndpoint {
         return retrofit.create(TmdbEndpoint::class.java)
     }
 }

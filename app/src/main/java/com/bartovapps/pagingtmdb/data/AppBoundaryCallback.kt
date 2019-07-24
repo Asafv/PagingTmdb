@@ -1,10 +1,9 @@
 package com.bartovapps.pagingtmdb.data
 
-import android.arch.paging.PagedList
+import androidx.paging.PagedList
 import com.bartovapps.pagingtmdb.data.persistance.MoviesDao
 import com.bartovapps.pagingtmdb.network.apis.TmdbEndpoint
 import com.bartovapps.pagingtmdb.network.model.response.ApiResponse
-import com.bartovapps.pagingtmdb.network.model.response.Movie
 import com.bartovapps.pagingtmdb.screens.main.MovieListItem
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
