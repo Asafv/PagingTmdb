@@ -16,6 +16,7 @@ import com.bartovapps.pagingtmdb.ViewModelFactory
 import com.bartovapps.pagingtmdb.network.model.response.Movie
 import com.bartovapps.pagingtmdb.screens.details.DetailsPageArgs
 import kotlinx.android.synthetic.main.fragment_main_page.*
+import timber.log.Timber
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,6 +51,7 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Timber.i("onViewCreated: ${savedInstanceState}")
         configureScreen()
     }
 
@@ -61,13 +63,20 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
 
     private fun setViewModel() {
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(MainViewModel::class.java)
-        viewModel.moviesPagedList.observe(this,
-            Observer<PagedList<Movie>> { t -> adapter.submitList(t) })
+        lifecycle.addObserver(viewModel)
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.moviesPagedList.observe(this,
+            Observer<PagedList<Movie>> {
+                    t -> adapter.submitList(t)
+                Timber.i("onChanged: ")
+            })
+    }
 
     override fun onItemClicked(id: Int) {
         findNavController().navigate(MainPageDirections.actionMainPageToDetailsPage(id))
     }
-
 }

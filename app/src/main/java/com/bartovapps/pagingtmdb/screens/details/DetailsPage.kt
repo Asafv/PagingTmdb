@@ -32,6 +32,7 @@ class DetailsPage : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setViewModel()
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
