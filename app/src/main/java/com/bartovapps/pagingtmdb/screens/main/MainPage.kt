@@ -64,8 +64,7 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
 
     private fun setViewModel() {
         viewModel = ViewModelProviders.of(this, ViewModelFactory(
-            activity?.application?.applicationContext!!,
-        0)).get(MainViewModel::class.java)
+            activity?.applicationContext!!)).get(MainViewModel::class.java)
         lifecycle.addObserver(viewModel)
     }
 

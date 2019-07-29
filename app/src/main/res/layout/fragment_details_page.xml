@@ -33,6 +33,8 @@
               android:layout_marginStart="16dp"
               android:textAlignment="center"
               android:textSize="22sp"
+              android:maxLines="2"
+              android:ellipsize="end"
               android:textColor="@color/cardview_light_background"
               android:textAppearance="?attr/textAppearanceHeadline1"
               app:layout_constraintStart_toEndOf="@id/mainPoster"
