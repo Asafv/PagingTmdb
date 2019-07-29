@@ -8,6 +8,12 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
+/**
+ *   This class in not in use anymore, the DataSource and DataSource.Factory are now provided by
+ *   ROOM database.
+ *
+ * */
+
 class TmdbDataSource(val endpoint: TmdbEndpoint) : PageKeyedDataSource<Int, Movie>() {
 
     val dispsables = CompositeDisposable()

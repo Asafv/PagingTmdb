@@ -6,7 +6,11 @@ import com.bartovapps.pagingtmdb.network.apis.TmdbEndpoint
 import com.bartovapps.pagingtmdb.network.model.response.Movie
 import javax.sql.DataSource
 
-
+/**
+ *   This class in not in use anymore, the DataSource and DataSource.Factory are now provided by
+ *   ROOM database.
+ *
+ * */
 
 class TmdbDsFactory(endpoint: TmdbEndpoint) : androidx.paging.DataSource.Factory<Int, Movie>() {
 
