@@ -10,31 +10,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.bartovapps.pagingtmdb.R
-import com.bartovapps.pagingtmdb.R.id.movieImage
 import com.bartovapps.pagingtmdb.network.ApiService
 import com.bartovapps.pagingtmdb.network.model.response.Movie
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.movie_item.movieImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 import timber.log.Timber
 
 class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) : ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffUtilCallback()) {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
         return MoviesViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as MoviesViewHolder).bind(getItem(position))
     }
 
 
 
-    inner class MoviesViewHolder(val viewItem : View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(viewItem){
-        val options = RequestOptions().apply(
+    inner class MoviesViewHolder(private val viewItem : View) : RecyclerView.ViewHolder(viewItem){
+        private val options = RequestOptions().apply(
             RequestOptions.placeholderOf(ActivityCompat.getDrawable(viewItem.context, R.drawable.loading_drawable))
         ).apply(
             RequestOptions.fitCenterTransform()
@@ -46,11 +44,14 @@ class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) : ListA
                 Glide.with(itemView.context).
                     load(path).
                     apply(options).
-                    into(itemView.movieImage)
+                    into(itemView.movie_image)
+                itemView.movie_title.text = item.title
+                itemView.movie_date.text = item.releaseDate
 
                 viewItem.setOnClickListener {
                     adapterClickListener.onItemClicked(item.id)
                 }
+
 
             }
         }
