@@ -5,8 +5,10 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.bartovapps.pagingtmdb.network.ApiService
 import com.bartovapps.pagingtmdb.network.apis.TmdbEndpoint
+import com.bartovapps.pagingtmdb.network.model.response.ApiResponse
 import com.bartovapps.pagingtmdb.network.model.response.DetailsApiResponse
 import com.bartovapps.pagingtmdb.network.model.response.Movie
+import io.reactivex.Flowable
 import io.reactivex.Single
 
 object Repository {
@@ -24,5 +26,9 @@ object Repository {
 
     fun getMovieById(id: Int): Single<DetailsApiResponse> {
         return endpoint.getMovieDetails(id)
+    }
+
+    fun getTopRatedMovies() : Flowable<ApiResponse>{
+        return endpoint.getTopRatedMovies(1)
     }
 }

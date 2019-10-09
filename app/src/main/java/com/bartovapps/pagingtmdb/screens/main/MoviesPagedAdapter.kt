@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import com.bartovapps.pagingtmdb.R
 import com.bartovapps.pagingtmdb.R.id.movieImage
 import com.bartovapps.pagingtmdb.network.ApiService
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.movie_item.movieImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 import timber.log.Timber
 
-class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) : PagedListAdapter<Movie, androidx.recyclerview.widget.RecyclerView.ViewHolder>(MoviesPagedAdapter.MovieDiffUtilCallback()) {
+class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) : ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffUtilCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {

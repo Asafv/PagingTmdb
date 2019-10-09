@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.bartovapps.pagingtmdb.R
 import com.bartovapps.pagingtmdb.ViewModelFactory
+import com.bartovapps.pagingtmdb.mvvm_core.MvvmBaseViewModel
 import com.bartovapps.pagingtmdb.network.model.response.Movie
 import com.bartovapps.pagingtmdb.screens.details.DetailsPageArgs
 import kotlinx.android.synthetic.main.fragment_main_page.*
@@ -34,7 +35,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
 
-    lateinit var viewModel : MainViewModel
+    lateinit var viewModel : MainScreenViewModel
     lateinit var adapter: MoviesPagedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +54,9 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
         super.onViewCreated(view, savedInstanceState)
         Timber.i("onViewCreated: ${savedInstanceState}")
         configureScreen()
+        if(savedInstanceState == null){
+            viewModel.dispatchInputEvent(MainScreenViewModel.MainScreenEvent.LoadTopRatedMovies)
+        }
     }
 
     private fun configureScreen() {
@@ -62,21 +66,50 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
     }
 
     private fun setViewModel() {
-        viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(MainScreenViewModel::class.java)
         lifecycle.addObserver(viewModel)
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.moviesPagedList.observe(this,
-            Observer<PagedList<Movie>> {
-                    t -> adapter.submitList(t)
-                Timber.i("onChanged: ")
-            })
+        viewModel.stateStream.observe(this,
+            Observer<MvvmBaseViewModel.MvvmState<MainScreenViewModel.MainScreenState>> { newState -> handleNewState(newState) })
     }
 
     override fun onItemClicked(id: Int) {
-        findNavController().navigate(MainPageDirections.actionMainPageToDetailsPage(id))
+        viewModel.dispatchInputEvent(MainScreenViewModel.MainScreenEvent.OnMovieItemClicked(id = id))
+    }
+
+    fun handleNewState(newState : MvvmBaseViewModel.MvvmState<MainScreenViewModel.MainScreenState>?){
+        newState?.let {
+            when(it){
+                is MvvmBaseViewModel.MvvmState.Init -> {
+                    Timber.i("Init MainPage")
+                }
+                is MvvmBaseViewModel.MvvmState.Loading -> {
+                    Timber.i("Loading movies...")
+                    progressView.visibility = View.VISIBLE
+                }
+                is MvvmBaseViewModel.MvvmState.Next<MainScreenViewModel.MainScreenState> -> {
+                    progressView.visibility = View.GONE
+                    handleNextState(it)
+                }
+                is MvvmBaseViewModel.MvvmState.Error -> {
+                    progressView.visibility = View.GONE
+                    handleError(it.e)
+                }
+            }
+        }
+    }
+
+    private fun handleError(e: Throwable) {
+        Timber.i("There was an error: ${e.message}")
+    }
+
+    private fun handleNextState(it: MvvmBaseViewModel.MvvmState.Next<MainScreenViewModel.MainScreenState>) {
+        when(it.data){
+            is MainScreenViewModel.MainScreenState.OnMoviesLoaded -> {
+                adapter.submitList(it.data.movies)
+            }
+            is MainScreenViewModel.MainScreenState.NavigateToDetails -> {
+                findNavController().navigate(MainPageDirections.actionMainPageToDetailsPage(it.data.movieId))
+            }
+        }
     }
 }
