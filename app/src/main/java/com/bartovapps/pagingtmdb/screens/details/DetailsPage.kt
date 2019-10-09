@@ -32,6 +32,12 @@ class DetailsPage : Fragment() {
         super.onCreate(savedInstanceState)
         setViewModel()
         setHasOptionsMenu(true)
+        loadMovieDetails()
+    }
+
+    private fun loadMovieDetails() {
+        val args : DetailsPageArgs by navArgs()
+        viewModel.handleInputEvent(DetailsViewModel.DetailsScreenEvent.LoadMovieDetails(movieId = args.id))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -79,8 +85,6 @@ class DetailsPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val args : DetailsPageArgs by navArgs()
-        viewModel.loadMovieDetails(args.id)
     }
 
 

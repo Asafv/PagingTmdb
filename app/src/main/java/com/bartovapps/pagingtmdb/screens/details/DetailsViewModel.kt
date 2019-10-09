@@ -18,7 +18,7 @@ class DetailsViewModel(private val repository: Repository) :
         }
     }
 
-    fun loadMovieDetails(id: Int) {
+    private fun loadMovieDetails(id: Int) {
         val disposable =
             repository.getMovieById(id).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {

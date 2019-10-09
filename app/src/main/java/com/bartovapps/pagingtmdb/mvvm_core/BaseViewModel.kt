@@ -11,7 +11,6 @@ import io.reactivex.subjects.PublishSubject
 
 abstract class BaseViewModel<T, R> : ViewModel() {
 
-    private val eventsDispatcher : PublishSubject<R> = PublishSubject.create()
     private var eventsSubscription : Disposable? = null
     protected val disposables : CompositeDisposable = CompositeDisposable()
 
@@ -27,19 +26,6 @@ abstract class BaseViewModel<T, R> : ViewModel() {
             eventsSubscription = null
         }
 
-        eventsSubscription = eventsDispatcher.subscribeOn(Schedulers.io()).filter { it != null }.
-            observeOn(AndroidSchedulers.mainThread()).
-            doOnNext {
-                clearEventDispatcher()
-            }.
-            subscribe{
-            handleInputEvent(it)
-        }
-
-    }
-
-    private fun clearEventDispatcher(){
-//        eventsDispatcher.onNext(null as R)
     }
 
     private val state = MutableLiveData<MvvmState<T>>().apply {
@@ -48,11 +34,6 @@ abstract class BaseViewModel<T, R> : ViewModel() {
 
     val stateStream : LiveData<MvvmState<T>>
     get() = state
-
-
-    fun dispatchInputEvent(event : R){
-        eventsDispatcher.onNext(event)
-    }
 
 
     protected fun onInit(){
@@ -80,13 +61,7 @@ abstract class BaseViewModel<T, R> : ViewModel() {
     }
 
 
-    override fun onCleared() {
-        super.onCleared()
-        eventsDispatcher.onComplete()
-        eventsSubscription?.dispose()
-    }
-
-    protected abstract fun handleInputEvent(event : R)
+    abstract fun handleInputEvent(event : R)
 
 
     sealed class MvvmState<out T>{

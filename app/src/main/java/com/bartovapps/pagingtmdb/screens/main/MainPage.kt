@@ -38,6 +38,8 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setViewModel()
+        adapter = MoviesPagedAdapter(this)
+        viewModel.handleInputEvent(MainScreenViewModel.MainScreenEvent.LoadTopRatedMovies)
     }
 
     override fun onCreateView(
@@ -54,7 +56,6 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
     }
 
     private fun configureScreen() {
-        adapter = MoviesPagedAdapter(this)
         moviesList.layoutManager = androidx.recyclerview.widget.GridLayoutManager(this.context, 2) as RecyclerView.LayoutManager?
         moviesList.adapter = adapter
     }
@@ -62,8 +63,6 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
     private fun setViewModel() {
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(MainScreenViewModel::class.java)
         lifecycle.addObserver(viewModel)
-        viewModel.stateStream.observe(this,
-            Observer<BaseViewModel.MvvmState<MainScreenViewModel.MainScreenState>> { newState -> handleNewState(newState) })
     }
 
     override fun onItemClicked(id: Int) {
@@ -73,7 +72,9 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
 
     override fun onResume() {
         super.onResume()
-        viewModel.dispatchInputEvent(MainScreenViewModel.MainScreenEvent.LoadTopRatedMovies)
+        viewModel.stateStream.observe(this,
+            Observer<BaseViewModel.MvvmState<MainScreenViewModel.MainScreenState>> { newState -> handleNewState(newState) })
+
     }
 
     private fun handleNewState(newState : BaseViewModel.MvvmState<MainScreenViewModel.MainScreenState>?){
@@ -103,6 +104,8 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
     }
 
     private fun handleNextState(it: BaseViewModel.MvvmState.Next<MainScreenViewModel.MainScreenState>) {
+        Timber.i("handleNextState: ${it.data.javaClass.simpleName}")
+
         when(it.data){
             is MainScreenViewModel.MainScreenState.OnMoviesLoaded -> {
                 adapter.submitList(it.data.movies)
