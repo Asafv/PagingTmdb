@@ -26,27 +26,21 @@ class MainScreenViewModel(private val repository: Repository) :
     }
 
     private fun handleMovieItemClicked(id: Int) {
-        publish(newState = MvvmState.Next(data = MainScreenState.NavigateToDetails(id)))
+        onNext(MainScreenState.NavigateToDetails(id))
     }
 
     private fun loadTopRatedMovies() {
         val disposable = repository.getTopRatedMovies().subscribeOn(Schedulers.io()).doOnSubscribe {
-            publish(newState = MvvmState.Loading)
+            onLoading()
         }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ handleApiResponse(it) },
-                { publish(MvvmState.Error(it)) })
+                { onError(it) })
         disposables.add(disposable)
     }
 
     private fun handleApiResponse(response: ApiResponse?) {
         response?.let {
-            publish(
-                MvvmState.Next(
-                    data = MainScreenState.OnMoviesLoaded(
-                        movies = it.results
-                    )
-                )
-            )
+            onNext(MainScreenState.OnMoviesLoaded(movies = it.results))
         }
     }
 
