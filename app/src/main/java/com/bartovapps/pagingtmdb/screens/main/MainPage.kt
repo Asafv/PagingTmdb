@@ -30,15 +30,15 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
+class MainPage : Fragment(), MoviesAdapter.AdapterClickListener {
 
     lateinit var viewModel : MainScreenViewModel
-    lateinit var adapter: MoviesPagedAdapter
+    lateinit var adapter: MoviesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setViewModel()
-        adapter = MoviesPagedAdapter(this)
+        adapter = MoviesAdapter(this)
         viewModel.handleInputEvent(MainScreenViewModel.MainScreenEvent.LoadTopRatedMovies)
     }
 

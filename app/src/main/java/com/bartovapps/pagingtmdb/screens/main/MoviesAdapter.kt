@@ -15,7 +15,7 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.movie_item.view.*
 import timber.log.Timber
 
-class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) : ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffUtilCallback()) {
+class MoviesAdapter(val adapterClickListener: AdapterClickListener) : ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffUtilCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
