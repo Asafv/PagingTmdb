@@ -19,6 +19,7 @@ import com.bartovapps.pagingtmdb.network.model.response.DetailsApiResponse
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_details_page.*
+import timber.log.Timber
 
 /**
  * A simple [Fragment] subclass.
@@ -37,6 +38,7 @@ class DetailsPage : Fragment() {
 
     private fun loadMovieDetails() {
         val args : DetailsPageArgs by navArgs()
+        Timber.i("loadMovieDetails: id: ${args.id}")
         viewModel.handleInputEvent(DetailsViewModel.DetailsScreenEvent.LoadMovieDetails(movieId = args.id))
     }
 
@@ -59,16 +61,18 @@ class DetailsPage : Fragment() {
     private fun handleNewState(t: BaseViewModel.State<DetailsViewModel.DetailsScreenState>) {
         when(t){
             is BaseViewModel.State.Init -> {
-
+                Timber.i("Init")
             }
             is BaseViewModel.State.Loading -> {
+                Timber.i("Loading")
 
             }
             is BaseViewModel.State.Next<DetailsViewModel.DetailsScreenState> -> {
+                Timber.i("Next: ${t.data.javaClass.simpleName}")
                 handleNext(t.data)
             }
             is BaseViewModel.State.Error -> {
-
+                Timber.i("Error: ${t.e.message}")
             }
         }
 
@@ -83,13 +87,9 @@ class DetailsPage : Fragment() {
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-
     private fun refreshUi(response: DetailsApiResponse) {
 
+        Timber.i("refreshUi: $response")
         val options = RequestOptions().apply(
             RequestOptions.placeholderOf(ActivityCompat.getDrawable(this.context!!, R.drawable.loading_drawable))
         ).apply(

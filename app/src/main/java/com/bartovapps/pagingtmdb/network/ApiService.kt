@@ -1,13 +1,11 @@
 package com.bartovapps.pagingtmdb.network
 
-import android.net.Uri
 import com.bartovapps.pagingtmdb.network.apis.TmdbEndpoint
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.net.URI
 
 object ApiService {
     const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"

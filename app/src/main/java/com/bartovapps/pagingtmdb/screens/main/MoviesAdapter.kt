@@ -36,19 +36,19 @@ class MoviesAdapter(val adapterClickListener: AdapterClickListener) : ListAdapte
             RequestOptions.fitCenterTransform()
         )
         fun bind(item : Movie?){
-            if(item != null){
-                val path = "https://${ApiService.TMDB_IMAGE_AUTHORITY}${item.posterPath}"
-                Timber.i("Image Uri: $path" )
+            item?.let { itm ->
+                val path = ApiService.buildImageUrl(itm.posterPath)
                 Glide.with(itemView.context).
                     load(path).
                     apply(options).
                     into(itemView.movie_image)
-                itemView.movie_title.text = item.title
-                itemView.movie_date.text = item.releaseDate
+                itemView.movie_title.text = itm.title
+                itemView.movie_date.text = itm.releaseDate
 
                 viewItem.setOnClickListener {
-                    adapterClickListener.onItemClicked(item.id)
+                    adapterClickListener.onItemClicked(itm.id)
                 }
+
             }
         }
     }
