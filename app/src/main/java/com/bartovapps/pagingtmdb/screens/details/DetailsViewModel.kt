@@ -1,41 +1,45 @@
 package com.bartovapps.pagingtmdb.screens.details
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.bartovapps.pagingtmdb.data.Repository
+import com.bartovapps.pagingtmdb.mvvm_core.MvvmBaseViewModel
 import com.bartovapps.pagingtmdb.network.model.response.DetailsApiResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 
-class DetailsViewModel(private val repository: Repository) : ViewModel() {
+class DetailsViewModel(private val repository: Repository) :
+    MvvmBaseViewModel<DetailsViewModel.DetailsScreenState, DetailsViewModel.DetailsScreenEvent>() {
 
-    val detailsLiveData = MutableLiveData<DetailsApiResponse?>()
 
-    private val disposables = CompositeDisposable()
-
-    init {
-
+    override fun handleInputEvent(event: DetailsScreenEvent) {
+        when (event) {
+            is DetailsScreenEvent.LoadMovieDetails -> {
+                loadMovieDetails(event.movieId)
+            }
+        }
     }
 
     fun loadMovieDetails(id: Int) {
         val disposable =
-            repository.getMovieById(id).
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread())
+            repository.getMovieById(id).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
+                    onLoading()
+                }
                 .subscribe({ t ->
-                    detailsLiveData.postValue(t)
-                    Timber.i("Got movie details: $t")
+                    onNext(DetailsScreenState.DetailsLoaded(t))
                 },
                     {
-                        Timber.e("There was an error: ${it.cause}")
+                        onError(it)
                     })
 
         disposables.add(disposable)
     }
 
+
+    sealed class DetailsScreenState {
+        class DetailsLoaded(val details: DetailsApiResponse) : DetailsScreenState()
+    }
+
+    sealed class DetailsScreenEvent {
+        class LoadMovieDetails(val movieId: Int) : DetailsScreenEvent()
+    }
 }

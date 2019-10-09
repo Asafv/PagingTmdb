@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 
 import com.bartovapps.pagingtmdb.R
 import com.bartovapps.pagingtmdb.ViewModelFactory
+import com.bartovapps.pagingtmdb.mvvm_core.MvvmBaseViewModel
 import com.bartovapps.pagingtmdb.network.ApiService
 import com.bartovapps.pagingtmdb.network.model.response.DetailsApiResponse
 import com.bumptech.glide.Glide
@@ -35,10 +36,7 @@ class DetailsPage : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_details_page, container, false)
     }
@@ -46,12 +44,38 @@ class DetailsPage : Fragment() {
     private fun setViewModel() {
         val viewModelFactory = ViewModelFactory()
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailsViewModel::class.java)
-        viewModel.detailsLiveData.observe(this,
-            Observer<DetailsApiResponse?> { t ->
+        viewModel.stateStream.observe(this,
+            Observer<MvvmBaseViewModel.MvvmState<DetailsViewModel.DetailsScreenState>> { t ->
                 t?.let {
-                    refreshUi(it)
+                    handleNewState(t)
                 }
             })
+    }
+
+    private fun handleNewState(t: MvvmBaseViewModel.MvvmState<DetailsViewModel.DetailsScreenState>) {
+        when(t){
+            is MvvmBaseViewModel.MvvmState.Init -> {
+
+            }
+            is MvvmBaseViewModel.MvvmState.Loading -> {
+
+            }
+            is MvvmBaseViewModel.MvvmState.Next<DetailsViewModel.DetailsScreenState> -> {
+                handleNext(t.data)
+            }
+            is MvvmBaseViewModel.MvvmState.Error -> {
+
+            }
+        }
+
+    }
+
+    private fun handleNext(data: DetailsViewModel.DetailsScreenState) {
+        when(data){
+            is DetailsViewModel.DetailsScreenState.DetailsLoaded -> {
+                refreshUi(data.details)
+            }
+        }
     }
 
 
