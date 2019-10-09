@@ -54,9 +54,6 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
         super.onViewCreated(view, savedInstanceState)
         Timber.i("onViewCreated: ${savedInstanceState}")
         configureScreen()
-        if(savedInstanceState == null){
-            viewModel.dispatchInputEvent(MainScreenViewModel.MainScreenEvent.LoadTopRatedMovies)
-        }
     }
 
     private fun configureScreen() {
@@ -73,14 +70,20 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
     }
 
     override fun onItemClicked(id: Int) {
-        viewModel.dispatchInputEvent(MainScreenViewModel.MainScreenEvent.OnMovieItemClicked(id = id))
+        findNavController().navigate(MainPageDirections.actionMainPageToDetailsPage(id))
+
     }
 
-    fun handleNewState(newState : MvvmBaseViewModel.MvvmState<MainScreenViewModel.MainScreenState>?){
+    override fun onResume() {
+        super.onResume()
+        viewModel.dispatchInputEvent(MainScreenViewModel.MainScreenEvent.LoadTopRatedMovies)
+    }
+
+    private fun handleNewState(newState : MvvmBaseViewModel.MvvmState<MainScreenViewModel.MainScreenState>?){
+        Timber.i("handleNewState: ${newState?.javaClass?.simpleName}")
         newState?.let {
             when(it){
                 is MvvmBaseViewModel.MvvmState.Init -> {
-                    Timber.i("Init MainPage")
                 }
                 is MvvmBaseViewModel.MvvmState.Loading -> {
                     Timber.i("Loading movies...")
@@ -108,7 +111,6 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
                 adapter.submitList(it.data.movies)
             }
             is MainScreenViewModel.MainScreenState.NavigateToDetails -> {
-                findNavController().navigate(MainPageDirections.actionMainPageToDetailsPage(it.data.movieId))
             }
         }
     }

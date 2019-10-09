@@ -7,7 +7,6 @@ import com.bartovapps.pagingtmdb.network.model.response.ApiResponse
 import com.bartovapps.pagingtmdb.network.model.response.Movie
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.schedulers.Timed
 import timber.log.Timber
 
 class MainScreenViewModel(private val repository: Repository) :
