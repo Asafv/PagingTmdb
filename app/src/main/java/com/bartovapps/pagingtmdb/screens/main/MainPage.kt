@@ -73,25 +73,25 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
     override fun onResume() {
         super.onResume()
         viewModel.stateStream.observe(this,
-            Observer<BaseViewModel.MvvmState<MainScreenViewModel.MainScreenState>> { newState -> handleNewState(newState) })
+            Observer<BaseViewModel.State<MainScreenViewModel.MainScreenState>> { newState -> handleNewState(newState) })
 
     }
 
-    private fun handleNewState(newState : BaseViewModel.MvvmState<MainScreenViewModel.MainScreenState>?){
+    private fun handleNewState(newState : BaseViewModel.State<MainScreenViewModel.MainScreenState>?){
         Timber.i("handleNewState: ${newState?.javaClass?.simpleName}")
         newState?.let {
             when(it){
-                is BaseViewModel.MvvmState.Init -> {
+                is BaseViewModel.State.Init -> {
                 }
-                is BaseViewModel.MvvmState.Loading -> {
+                is BaseViewModel.State.Loading -> {
                     Timber.i("Loading movies...")
                     progressView.visibility = View.VISIBLE
                 }
-                is BaseViewModel.MvvmState.Next<MainScreenViewModel.MainScreenState> -> {
+                is BaseViewModel.State.Next<MainScreenViewModel.MainScreenState> -> {
                     progressView.visibility = View.GONE
                     handleNextState(it)
                 }
-                is BaseViewModel.MvvmState.Error -> {
+                is BaseViewModel.State.Error -> {
                     progressView.visibility = View.GONE
                     handleError(it.e)
                 }
@@ -103,7 +103,7 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
         Timber.i("There was an error: ${e.message}")
     }
 
-    private fun handleNextState(it: BaseViewModel.MvvmState.Next<MainScreenViewModel.MainScreenState>) {
+    private fun handleNextState(it: BaseViewModel.State.Next<MainScreenViewModel.MainScreenState>) {
         Timber.i("handleNextState: ${it.data.javaClass.simpleName}")
 
         when(it.data){

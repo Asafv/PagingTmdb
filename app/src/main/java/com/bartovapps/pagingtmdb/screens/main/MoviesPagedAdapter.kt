@@ -1,7 +1,5 @@
 package com.bartovapps.pagingtmdb.screens.main
 
-import androidx.paging.PagedListAdapter
-import android.net.Uri
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -51,8 +49,6 @@ class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) : ListA
                 viewItem.setOnClickListener {
                     adapterClickListener.onItemClicked(item.id)
                 }
-
-
             }
         }
     }

@@ -49,25 +49,25 @@ class DetailsPage : Fragment() {
         val viewModelFactory = ViewModelFactory()
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailsViewModel::class.java)
         viewModel.stateStream.observe(this,
-            Observer<BaseViewModel.MvvmState<DetailsViewModel.DetailsScreenState>> { t ->
+            Observer<BaseViewModel.State<DetailsViewModel.DetailsScreenState>> { t ->
                 t?.let {
                     handleNewState(t)
                 }
             })
     }
 
-    private fun handleNewState(t: BaseViewModel.MvvmState<DetailsViewModel.DetailsScreenState>) {
+    private fun handleNewState(t: BaseViewModel.State<DetailsViewModel.DetailsScreenState>) {
         when(t){
-            is BaseViewModel.MvvmState.Init -> {
+            is BaseViewModel.State.Init -> {
 
             }
-            is BaseViewModel.MvvmState.Loading -> {
+            is BaseViewModel.State.Loading -> {
 
             }
-            is BaseViewModel.MvvmState.Next<DetailsViewModel.DetailsScreenState> -> {
+            is BaseViewModel.State.Next<DetailsViewModel.DetailsScreenState> -> {
                 handleNext(t.data)
             }
-            is BaseViewModel.MvvmState.Error -> {
+            is BaseViewModel.State.Error -> {
 
             }
         }

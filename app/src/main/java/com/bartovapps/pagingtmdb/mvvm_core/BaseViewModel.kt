@@ -3,60 +3,41 @@ package com.bartovapps.pagingtmdb.mvvm_core
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
 
 abstract class BaseViewModel<T, R> : ViewModel() {
 
-    private var eventsSubscription : Disposable? = null
     protected val disposables : CompositeDisposable = CompositeDisposable()
 
-    init {
-        initEventsDispatcher()
+    private val state = MutableLiveData<State<T>>().apply {
+        value = State.Init
     }
 
-    private fun initEventsDispatcher() {
-        eventsSubscription?.let {
-            if(!it.isDisposed){
-                it.dispose()
-            }
-            eventsSubscription = null
-        }
-
-    }
-
-    private val state = MutableLiveData<MvvmState<T>>().apply {
-        value = MvvmState.Init
-    }
-
-    val stateStream : LiveData<MvvmState<T>>
+    val stateStream : LiveData<State<T>>
     get() = state
 
 
     protected fun onInit(){
-        publish(MvvmState.Init)
+        publish(State.Init)
     }
 
     protected fun onNext(value : T){
-        publish(MvvmState.Next(data = value))
+        publish(State.Next(data = value))
     }
 
     protected fun onLoading(){
-        publish(newState = MvvmState.Loading)
+        publish(newState = State.Loading)
     }
 
     protected fun onError(e : Throwable){
-        publish(newState = MvvmState.Error(e))
+        publish(newState = State.Error(e))
     }
 
     protected fun onComplete(){
-        publish(newState = MvvmState.Completed)
+        publish(newState = State.Completed)
     }
 
-    private fun publish(newState : MvvmState<T>){
+    private fun publish(newState : State<T>){
         state.postValue(newState)
     }
 
@@ -64,11 +45,11 @@ abstract class BaseViewModel<T, R> : ViewModel() {
     abstract fun handleInputEvent(event : R)
 
 
-    sealed class MvvmState<out T>{
-        object Init : MvvmState<Nothing>()
-        object Loading : MvvmState<Nothing>()
-        class Next<T>(val data : T) : MvvmState<T>()
-        class Error(val e : Throwable) : MvvmState<Nothing>()
-        object Completed : MvvmState<Nothing>()
+    sealed class State<out T>{
+        object Init : State<Nothing>()
+        object Loading : State<Nothing>()
+        class Next<T>(val data : T) : State<T>()
+        class Error(val e : Throwable) : State<Nothing>()
+        object Completed : State<Nothing>()
     }
 }
