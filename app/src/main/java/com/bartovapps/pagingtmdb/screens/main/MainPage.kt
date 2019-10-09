@@ -7,7 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 
@@ -79,6 +82,6 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
     }
 
     override fun onItemClicked(id: Int) {
-        findNavController().navigate(MainPageDirections.actionMainPageToDetailsPage(id))
+        findNavController().navigate(MainPageDirections.actionMainPageToDetailsPage(id = id))
     }
 }

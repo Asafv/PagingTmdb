@@ -47,7 +47,8 @@ class DetailsPage : Fragment() {
 
     private fun setViewModel() {
         val args : DetailsPageArgs by navArgs()
-        val viewModelFactory = DetailsViewModelFactory(activity?.applicationContext!!, args.id)
+        val id = args.id
+        val viewModelFactory = DetailsViewModelFactory(activity?.applicationContext!!, id)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailsViewModel::class.java)
         viewModel.detailsLiveData.observe(this,
             Observer<Movie> { t ->
