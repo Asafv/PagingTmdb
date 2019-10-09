@@ -2,7 +2,7 @@ package com.bartovapps.pagingtmdb.screens.main
 
 import androidx.lifecycle.LifecycleObserver
 import com.bartovapps.pagingtmdb.data.Repository
-import com.bartovapps.pagingtmdb.mvvm_core.MvvmBaseViewModel
+import com.bartovapps.pagingtmdb.mvvm_core.BaseViewModel
 import com.bartovapps.pagingtmdb.network.model.response.ApiResponse
 import com.bartovapps.pagingtmdb.network.model.response.Movie
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -10,7 +10,7 @@ import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 class MainScreenViewModel(private val repository: Repository) :
-    MvvmBaseViewModel<MainScreenViewModel.MainScreenState, MainScreenViewModel.MainScreenEvent>(),
+    BaseViewModel<MainScreenViewModel.MainScreenState, MainScreenViewModel.MainScreenEvent>(),
     LifecycleObserver {
 
     override fun handleInputEvent(event: MainScreenEvent) {

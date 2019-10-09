@@ -9,7 +9,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
-abstract class MvvmBaseViewModel<T, R> : ViewModel() {
+abstract class BaseViewModel<T, R> : ViewModel() {
 
     private val eventsDispatcher : PublishSubject<R> = PublishSubject.create()
     private var eventsSubscription : Disposable? = null
@@ -71,8 +71,19 @@ abstract class MvvmBaseViewModel<T, R> : ViewModel() {
         publish(newState = MvvmState.Error(e))
     }
 
+    protected fun onComplete(){
+        publish(newState = MvvmState.Completed)
+    }
+
     private fun publish(newState : MvvmState<T>){
         state.postValue(newState)
+    }
+
+
+    override fun onCleared() {
+        super.onCleared()
+        eventsDispatcher.onComplete()
+        eventsSubscription?.dispose()
     }
 
     protected abstract fun handleInputEvent(event : R)

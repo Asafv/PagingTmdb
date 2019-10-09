@@ -13,14 +13,12 @@ import androidx.navigation.fragment.navArgs
 
 import com.bartovapps.pagingtmdb.R
 import com.bartovapps.pagingtmdb.ViewModelFactory
-import com.bartovapps.pagingtmdb.mvvm_core.MvvmBaseViewModel
+import com.bartovapps.pagingtmdb.mvvm_core.BaseViewModel
 import com.bartovapps.pagingtmdb.network.ApiService
 import com.bartovapps.pagingtmdb.network.model.response.DetailsApiResponse
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_details_page.*
-import kotlinx.android.synthetic.main.movie_item.view.*
-import timber.log.Timber
 
 /**
  * A simple [Fragment] subclass.
@@ -45,25 +43,25 @@ class DetailsPage : Fragment() {
         val viewModelFactory = ViewModelFactory()
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailsViewModel::class.java)
         viewModel.stateStream.observe(this,
-            Observer<MvvmBaseViewModel.MvvmState<DetailsViewModel.DetailsScreenState>> { t ->
+            Observer<BaseViewModel.MvvmState<DetailsViewModel.DetailsScreenState>> { t ->
                 t?.let {
                     handleNewState(t)
                 }
             })
     }
 
-    private fun handleNewState(t: MvvmBaseViewModel.MvvmState<DetailsViewModel.DetailsScreenState>) {
+    private fun handleNewState(t: BaseViewModel.MvvmState<DetailsViewModel.DetailsScreenState>) {
         when(t){
-            is MvvmBaseViewModel.MvvmState.Init -> {
+            is BaseViewModel.MvvmState.Init -> {
 
             }
-            is MvvmBaseViewModel.MvvmState.Loading -> {
+            is BaseViewModel.MvvmState.Loading -> {
 
             }
-            is MvvmBaseViewModel.MvvmState.Next<DetailsViewModel.DetailsScreenState> -> {
+            is BaseViewModel.MvvmState.Next<DetailsViewModel.DetailsScreenState> -> {
                 handleNext(t.data)
             }
-            is MvvmBaseViewModel.MvvmState.Error -> {
+            is BaseViewModel.MvvmState.Error -> {
 
             }
         }

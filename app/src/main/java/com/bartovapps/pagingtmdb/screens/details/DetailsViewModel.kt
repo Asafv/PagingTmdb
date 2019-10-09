@@ -1,13 +1,13 @@
 package com.bartovapps.pagingtmdb.screens.details
 
 import com.bartovapps.pagingtmdb.data.Repository
-import com.bartovapps.pagingtmdb.mvvm_core.MvvmBaseViewModel
+import com.bartovapps.pagingtmdb.mvvm_core.BaseViewModel
 import com.bartovapps.pagingtmdb.network.model.response.DetailsApiResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class DetailsViewModel(private val repository: Repository) :
-    MvvmBaseViewModel<DetailsViewModel.DetailsScreenState, DetailsViewModel.DetailsScreenEvent>() {
+    BaseViewModel<DetailsViewModel.DetailsScreenState, DetailsViewModel.DetailsScreenEvent>() {
 
 
     override fun handleInputEvent(event: DetailsScreenEvent) {

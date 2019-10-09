@@ -8,14 +8,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 
 import com.bartovapps.pagingtmdb.R
 import com.bartovapps.pagingtmdb.ViewModelFactory
-import com.bartovapps.pagingtmdb.mvvm_core.MvvmBaseViewModel
-import com.bartovapps.pagingtmdb.network.model.response.Movie
-import com.bartovapps.pagingtmdb.screens.details.DetailsPageArgs
+import com.bartovapps.pagingtmdb.mvvm_core.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_main_page.*
 import timber.log.Timber
 
@@ -66,7 +63,7 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(MainScreenViewModel::class.java)
         lifecycle.addObserver(viewModel)
         viewModel.stateStream.observe(this,
-            Observer<MvvmBaseViewModel.MvvmState<MainScreenViewModel.MainScreenState>> { newState -> handleNewState(newState) })
+            Observer<BaseViewModel.MvvmState<MainScreenViewModel.MainScreenState>> { newState -> handleNewState(newState) })
     }
 
     override fun onItemClicked(id: Int) {
@@ -79,21 +76,21 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
         viewModel.dispatchInputEvent(MainScreenViewModel.MainScreenEvent.LoadTopRatedMovies)
     }
 
-    private fun handleNewState(newState : MvvmBaseViewModel.MvvmState<MainScreenViewModel.MainScreenState>?){
+    private fun handleNewState(newState : BaseViewModel.MvvmState<MainScreenViewModel.MainScreenState>?){
         Timber.i("handleNewState: ${newState?.javaClass?.simpleName}")
         newState?.let {
             when(it){
-                is MvvmBaseViewModel.MvvmState.Init -> {
+                is BaseViewModel.MvvmState.Init -> {
                 }
-                is MvvmBaseViewModel.MvvmState.Loading -> {
+                is BaseViewModel.MvvmState.Loading -> {
                     Timber.i("Loading movies...")
                     progressView.visibility = View.VISIBLE
                 }
-                is MvvmBaseViewModel.MvvmState.Next<MainScreenViewModel.MainScreenState> -> {
+                is BaseViewModel.MvvmState.Next<MainScreenViewModel.MainScreenState> -> {
                     progressView.visibility = View.GONE
                     handleNextState(it)
                 }
-                is MvvmBaseViewModel.MvvmState.Error -> {
+                is BaseViewModel.MvvmState.Error -> {
                     progressView.visibility = View.GONE
                     handleError(it.e)
                 }
@@ -105,7 +102,7 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
         Timber.i("There was an error: ${e.message}")
     }
 
-    private fun handleNextState(it: MvvmBaseViewModel.MvvmState.Next<MainScreenViewModel.MainScreenState>) {
+    private fun handleNextState(it: BaseViewModel.MvvmState.Next<MainScreenViewModel.MainScreenState>) {
         when(it.data){
             is MainScreenViewModel.MainScreenState.OnMoviesLoaded -> {
                 adapter.submitList(it.data.movies)
