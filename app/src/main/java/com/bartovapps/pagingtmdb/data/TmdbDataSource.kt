@@ -16,51 +16,51 @@ class TmdbDataSource(val endpoint: TmdbEndpoint) : PageKeyedDataSource<Int, Movi
         const val FIRST_PAGE = 1
     }
 
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Movie>) {
-        val disposable = endpoint.getTopRatedMovies(FIRST_PAGE).
-            subscribeOn(Schedulers.io()).
-            observeOn(AndroidSchedulers.mainThread()).subscribe({apiResponse ->
-            Timber.i("loadInitial: got: ${apiResponse.results.size} results" )
-            callback.onResult(apiResponse.results, FIRST_PAGE, FIRST_PAGE+1)
-        }, {e ->
-            Timber.e("There was an error: ${e.message}, ${e.cause}" )
-        })
+    override fun loadInitial(
+        params: LoadInitialParams<Int>,
+        callback: LoadInitialCallback<Int, Movie>
+    ) {
+        val disposable = endpoint.getTopRatedMovies(FIRST_PAGE).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({ apiResponse ->
+                Timber.i("loadInitial: got: ${apiResponse.results.size} results")
+                callback.onResult(apiResponse.results, FIRST_PAGE, FIRST_PAGE + 1)
+            }, { e ->
+                Timber.e("There was an error: ${e.message}, ${e.cause}")
+            })
 
         dispsables.add(disposable)
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
-        Timber.i("loadAfter: page: ${params.key}" )
-        val disposable = endpoint.getTopRatedMovies(params.key).
-            subscribeOn(Schedulers.io()).
-            observeOn(AndroidSchedulers.mainThread()).subscribe({apiResponse ->
-            Timber.i("loadAfter: got: ${apiResponse.results.size} results" )
-            callback.onResult(apiResponse.results, params.key + 1)
-        }, {e ->
-            Timber.e("There was an error: ${e.message}, ${e.cause}" )
-        })
+        Timber.i("loadAfter: page: ${params.key}")
+        val disposable = endpoint.getTopRatedMovies(params.key).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({ apiResponse ->
+                Timber.i("loadAfter: got: ${apiResponse.results.size} results")
+                callback.onResult(apiResponse.results, params.key + 1)
+            }, { e ->
+                Timber.e("There was an error: ${e.message}, ${e.cause}")
+            })
 
         dispsables.add(disposable)
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
-        Timber.i("loadBefore: page: ${params.key}" )
+        Timber.i("loadBefore: page: ${params.key}")
 
-        val disposable = endpoint.getTopRatedMovies(params.key).
-            subscribeOn(Schedulers.io()).
-            observeOn(AndroidSchedulers.mainThread()).subscribe({apiResponse ->
-            Timber.i("loadBefore: got: ${apiResponse.results.size} results" )
-            val nextKey =
-            if(params.key == FIRST_PAGE){
-                null
-            } else {
-                params.key - 1
-            }
+        val disposable = endpoint.getTopRatedMovies(params.key).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({ apiResponse ->
+                Timber.i("loadBefore: got: ${apiResponse.results.size} results")
+                val nextKey =
+                    if (params.key == FIRST_PAGE) {
+                        null
+                    } else {
+                        params.key - 1
+                    }
 
-            callback.onResult(apiResponse.results, nextKey)
-        }, {e ->
-            Timber.e("There was an error: ${e.message}, ${e.cause}" )
-        })
+                callback.onResult(apiResponse.results, nextKey)
+            }, { e ->
+                Timber.e("There was an error: ${e.message}, ${e.cause}")
+            })
 
         dispsables.add(disposable)
     }

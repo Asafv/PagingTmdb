@@ -7,7 +7,6 @@ import com.bartovapps.pagingtmdb.network.model.response.Movie
 import javax.sql.DataSource
 
 
-
 class TmdbDsFactory(endpoint: TmdbEndpoint) : androidx.paging.DataSource.Factory<Int, Movie>() {
 
     private val moviesLiveData = MutableLiveData<PageKeyedDataSource<Int, Movie>>()

@@ -6,9 +6,9 @@ import com.bartovapps.pagingtmdb.data.Repository
 import com.bartovapps.pagingtmdb.network.model.response.Movie
 import timber.log.Timber
 
-class MainViewModel(val repository: Repository) : ViewModel(), LifecycleObserver{
+class MainViewModel(val repository: Repository) : ViewModel(), LifecycleObserver {
 
-    val moviesPagedList : LiveData<PagedList<Movie>> = repository.moviesList
+    val moviesPagedList: LiveData<PagedList<Movie>> = repository.moviesList
 
 
 }

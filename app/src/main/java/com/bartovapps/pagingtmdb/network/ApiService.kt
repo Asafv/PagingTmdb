@@ -16,7 +16,7 @@ object ApiService {
 
 
     fun buildImageUrl(imagePath: String): String {
-        return  "https://$TMDB_IMAGE_AUTHORITY$imagePath"
+        return "https://$TMDB_IMAGE_AUTHORITY$imagePath"
     }
 
 
@@ -27,17 +27,19 @@ object ApiService {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         client = OkHttpClient()
-        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).addInterceptor { chain ->
-            val original = chain.request()
-            val orgUrl = original.url()
-            val newUrl = orgUrl.newBuilder().addQueryParameter("api_key", API_KEY).build()
+        val client: OkHttpClient =
+            OkHttpClient.Builder().addInterceptor(loggingInterceptor).addInterceptor { chain ->
+                val original = chain.request()
+                val orgUrl = original.url()
+                val newUrl = orgUrl.newBuilder().addQueryParameter("api_key", API_KEY).build()
 
-            val reqBuilder = original.newBuilder().url(newUrl)
-            chain.proceed(reqBuilder.build())
-        }.build()
+                val reqBuilder = original.newBuilder().url(newUrl)
+                chain.proceed(reqBuilder.build())
+            }.build()
 
 
-        retrofit = Retrofit.Builder().baseUrl(TMDB_BASE_URL).addConverterFactory(GsonConverterFactory.create())
+        retrofit = Retrofit.Builder().baseUrl(TMDB_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create()).client(client).build()
     }
 

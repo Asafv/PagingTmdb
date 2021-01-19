@@ -11,8 +11,8 @@ import retrofit2.http.Query
 
 interface TmdbEndpoint {
     @GET("movie/top_rated/")
-    fun getTopRatedMovies(@Query("page") page: Int) : Flowable<ApiResponse>
+    fun getTopRatedMovies(@Query("page") page: Int): Flowable<ApiResponse>
 
     @GET("movie/{movieId}")
-    fun getMovieDetails(@Path("movieId") movieId: Int) : Single<DetailsApiResponse>
+    fun getMovieDetails(@Path("movieId") movieId: Int): Single<DetailsApiResponse>
 }

@@ -32,7 +32,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
 
-    lateinit var viewModel : MainViewModel
+    lateinit var viewModel: MainViewModel
     lateinit var adapter: MoviesPagedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +43,7 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) : View? {
+    ): View? {
         return inflater.inflate(R.layout.fragment_main_page, container, false)
     }
 
@@ -55,7 +55,10 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
 
     private fun configureScreen() {
         adapter = MoviesPagedAdapter(this)
-        moviesList.layoutManager = androidx.recyclerview.widget.GridLayoutManager(this.context, 2) as RecyclerView.LayoutManager?
+        moviesList.layoutManager = androidx.recyclerview.widget.GridLayoutManager(
+            this.context,
+            2
+        ) as RecyclerView.LayoutManager?
         moviesList.adapter = adapter
     }
 
@@ -68,8 +71,8 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
     override fun onResume() {
         super.onResume()
         viewModel.moviesPagedList.observe(this,
-            Observer<PagedList<Movie>> {
-                    t -> adapter.submitList(t)
+            Observer<PagedList<Movie>> { t ->
+                adapter.submitList(t)
                 Timber.i("onChanged: ")
             })
     }

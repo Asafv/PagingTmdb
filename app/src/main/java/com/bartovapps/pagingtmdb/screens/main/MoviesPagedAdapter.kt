@@ -18,34 +18,44 @@ import kotlinx.android.synthetic.main.movie_item.movieImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 import timber.log.Timber
 
-class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) : PagedListAdapter<Movie, androidx.recyclerview.widget.RecyclerView.ViewHolder>(MoviesPagedAdapter.MovieDiffUtilCallback()) {
+class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) :
+    PagedListAdapter<Movie, androidx.recyclerview.widget.RecyclerView.ViewHolder>(MoviesPagedAdapter.MovieDiffUtilCallback()) {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
         return MoviesViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: androidx.recyclerview.widget.RecyclerView.ViewHolder,
+        position: Int
+    ) {
         (holder as MoviesViewHolder).bind(getItem(position))
     }
 
 
-
-    inner class MoviesViewHolder(val viewItem : View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(viewItem){
+    inner class MoviesViewHolder(val viewItem: View) :
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(viewItem) {
         val options = RequestOptions().apply(
-            RequestOptions.placeholderOf(ActivityCompat.getDrawable(viewItem.context, R.drawable.loading_drawable))
+            RequestOptions.placeholderOf(
+                ActivityCompat.getDrawable(
+                    viewItem.context,
+                    R.drawable.loading_drawable
+                )
+            )
         ).apply(
             RequestOptions.fitCenterTransform()
         )
-        fun bind(item : Movie?){
-            if(item != null){
+
+        fun bind(item: Movie?) {
+            if (item != null) {
                 val path = "https://${ApiService.TMDB_IMAGE_AUTHORITY}${item.posterPath}"
-                Timber.i("Image Uri: $path" )
-                Glide.with(itemView.context).
-                    load(path).
-                    apply(options).
-                    into(itemView.movieImage)
+                Timber.i("Image Uri: $path")
+                Glide.with(itemView.context).load(path).apply(options).into(itemView.movieImage)
 
                 viewItem.setOnClickListener {
                     adapterClickListener.onItemClicked(item.id)
@@ -56,18 +66,18 @@ class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) : Paged
         }
     }
 
-     class MovieDiffUtilCallback : DiffUtil.ItemCallback<Movie>(){
+    class MovieDiffUtilCallback : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldMovie: Movie, newMovie: Movie): Boolean {
             return oldMovie.id == newMovie.id
         }
 
-        override fun areContentsTheSame(oldMovie:  Movie, newMovie: Movie): Boolean {
+        override fun areContentsTheSame(oldMovie: Movie, newMovie: Movie): Boolean {
             return oldMovie == newMovie
         }
     }
 
 
-    interface AdapterClickListener{
+    interface AdapterClickListener {
         fun onItemClicked(id: Int)
     }
 }

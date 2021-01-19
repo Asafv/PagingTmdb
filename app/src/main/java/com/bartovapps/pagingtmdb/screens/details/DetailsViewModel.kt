@@ -20,9 +20,8 @@ class DetailsViewModel(private val repository: Repository) : ViewModel() {
 
     fun loadMovieDetails(id: Int) {
         val disposable =
-            repository.getMovieById(id).
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread())
+            repository.getMovieById(id).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ t ->
                     detailsLiveData.postValue(t)
                     Timber.i("Got movie details: $t")

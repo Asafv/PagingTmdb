@@ -10,13 +10,13 @@ import com.bartovapps.pagingtmdb.network.model.response.Movie
 import io.reactivex.Single
 
 object Repository {
-    private val endpoint : TmdbEndpoint = ApiService.getEndPoint()
+    private val endpoint: TmdbEndpoint = ApiService.getEndPoint()
     val moviesList: LiveData<PagedList<Movie>>
 
     init {
         val config = PagedList.Config.Builder()
-            .setPageSize(20).
-                setEnablePlaceholders(true).setPrefetchDistance(5).setInitialLoadSizeHint(1).build()
+            .setPageSize(20).setEnablePlaceholders(true).setPrefetchDistance(5)
+            .setInitialLoadSizeHint(1).build()
 
         moviesList = LivePagedListBuilder(TmdbDsFactory(endpoint), config).build()
     }
