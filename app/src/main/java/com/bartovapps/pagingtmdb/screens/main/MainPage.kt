@@ -67,7 +67,6 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
         lifecycle.addObserver(viewModel)
     }
 
-
     override fun onResume() {
         super.onResume()
         viewModel.moviesPagedList.observe(this,
@@ -77,7 +76,7 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
             })
     }
 
-    override fun onItemClicked(id: Int) {
-        findNavController().navigate(MainPageDirections.actionMainPageToDetailsPage(id))
+    override fun onItemClicked(item: Movie) {
+        findNavController().navigate(MainPageDirections.actionMainPageToDetailsPage(item.id, item.title))
     }
 }

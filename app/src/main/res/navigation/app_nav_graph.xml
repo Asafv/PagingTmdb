@@ -7,7 +7,7 @@
 
     <fragment android:id="@+id/mainPage"
               android:name="com.bartovapps.pagingtmdb.screens.main.MainPage"
-              android:label="MainPage">
+              android:label="Top Rated Movies">
 
         <action android:id="@+id/action_mainPage_to_detailsPage"
                 app:destination="@id/detailsPage"
@@ -19,7 +19,7 @@
 
     <fragment android:id="@+id/detailsPage"
               android:name="com.bartovapps.pagingtmdb.screens.details.DetailsPage"
-              android:label="fragment_details_page"
+              android:label="{title}"
               tools:layout="@layout/fragment_details_page">
 
         <argument
@@ -27,5 +27,8 @@
                 app:argType="integer"
                 android:defaultValue="100"/>
 
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
 </navigation>

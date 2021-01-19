@@ -58,7 +58,7 @@ class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) :
                 Glide.with(itemView.context).load(path).apply(options).into(itemView.movieImage)
 
                 viewItem.setOnClickListener {
-                    adapterClickListener.onItemClicked(item.id)
+                    adapterClickListener.onItemClicked(item)
                 }
 
                 itemView.movie_title.text = item.title
@@ -78,6 +78,6 @@ class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) :
 
 
     interface AdapterClickListener {
-        fun onItemClicked(id: Int)
+        fun onItemClicked(item: Movie)
     }
 }
