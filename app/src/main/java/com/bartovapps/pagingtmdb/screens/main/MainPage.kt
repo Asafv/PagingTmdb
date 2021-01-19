@@ -1,10 +1,8 @@
 package com.bartovapps.pagingtmdb.screens.main
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -51,7 +49,7 @@ class MainPage : Fragment(), MoviesPagedAdapter.AdapterClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Timber.i("onViewCreated: ${savedInstanceState}")
+        Timber.i("onViewCreated: $savedInstanceState")
         configureScreen()
     }
 

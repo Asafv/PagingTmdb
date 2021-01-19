@@ -27,7 +27,7 @@ import timber.log.Timber
  */
 class DetailsPage : Fragment() {
 
-    lateinit var viewModel : DetailsViewModel
+    lateinit var viewModel: DetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,34 +54,32 @@ class DetailsPage : Fragment() {
             })
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val args : DetailsPageArgs by navArgs()
+        val args: DetailsPageArgs by navArgs()
         viewModel.loadMovieDetails(args.id)
     }
 
-
     private fun refreshUi(response: DetailsApiResponse) {
-
         val options = RequestOptions().apply(
-            RequestOptions.placeholderOf(ActivityCompat.getDrawable(this.context!!, R.drawable.loading_drawable))
+            RequestOptions.placeholderOf(
+                ActivityCompat.getDrawable(
+                    this.context!!,
+                    R.drawable.loading_drawable
+                )
+            )
         ).apply(
             RequestOptions.fitCenterTransform()
         )
 
 
         response.backdrop_path?.let {
-            Glide.with(this.context).
-                load(ApiService.buildImageUrl(it)).
-                apply(options).
-                into(detailsPoster)
+            Glide.with(this.context).load(ApiService.buildImageUrl(it)).apply(options)
+                .into(detailsPoster)
         }
 
-        Glide.with(this.context).
-            load(ApiService.buildImageUrl(response.poster_path!!)).
-            apply(options).
-            into(mainPoster)
+        Glide.with(this.context).load(ApiService.buildImageUrl(response.poster_path!!))
+            .apply(options).into(mainPoster)
 
         movieTitle.text = response.title
         rate.text = "${response.vote_average} / 10"
@@ -89,7 +87,4 @@ class DetailsPage : Fragment() {
         overview.text = response.overview
 
     }
-
-
-
 }

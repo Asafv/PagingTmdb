@@ -51,6 +51,7 @@ class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) : Paged
                     adapterClickListener.onItemClicked(item.id)
                 }
 
+                itemView.movie_title.text = item.title
             }
         }
     }

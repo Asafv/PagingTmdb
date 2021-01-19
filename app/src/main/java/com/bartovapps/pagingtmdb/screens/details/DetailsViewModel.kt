@@ -18,10 +18,6 @@ class DetailsViewModel(private val repository: Repository) : ViewModel() {
 
     private val disposables = CompositeDisposable()
 
-    init {
-
-    }
-
     fun loadMovieDetails(id: Int) {
         val disposable =
             repository.getMovieById(id).
@@ -38,4 +34,8 @@ class DetailsViewModel(private val repository: Repository) : ViewModel() {
         disposables.add(disposable)
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        disposables.clear()
+    }
 }
