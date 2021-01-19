@@ -19,19 +19,19 @@ import kotlinx.android.synthetic.main.movie_item.view.*
 import timber.log.Timber
 
 class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) :
-    PagedListAdapter<Movie, androidx.recyclerview.widget.RecyclerView.ViewHolder>(MoviesPagedAdapter.MovieDiffUtilCallback()) {
+    PagedListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffUtilCallback()) {
 
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+    ): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
         return MoviesViewHolder(view)
     }
 
     override fun onBindViewHolder(
-        holder: androidx.recyclerview.widget.RecyclerView.ViewHolder,
+        holder: RecyclerView.ViewHolder,
         position: Int
     ) {
         (holder as MoviesViewHolder).bind(getItem(position))
@@ -39,7 +39,7 @@ class MoviesPagedAdapter(val adapterClickListener: AdapterClickListener) :
 
 
     inner class MoviesViewHolder(val viewItem: View) :
-        androidx.recyclerview.widget.RecyclerView.ViewHolder(viewItem) {
+        RecyclerView.ViewHolder(viewItem) {
         val options = RequestOptions().apply(
             RequestOptions.placeholderOf(
                 ActivityCompat.getDrawable(
